@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthorizationsController;
 use App\Http\Controllers\Api\CaptchasController;
 use App\Http\Controllers\Api\ImagesController;
+use App\Http\Controllers\Api\MediaGroupsController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\VerificationCodesController;
 use Illuminate\Http\Request;
@@ -57,6 +58,18 @@ Route::prefix('v1')->name('v1.')->group(function () {
 
         Route::group(['prefix' => 'images'], function () {
             Route::post('', [ImagesController::class, 'store'])->name('user.store');
+        });
+
+        Route::group(['prefix' => 'media_groups'], function () {
+            Route::get('', [MediaGroupsController::class, 'index'])->name('media_groups.index');
+            Route::post('', [MediaGroupsController::class, 'store'])->name('media_groups.store');
+            Route::group(['prefix' => '{media_group}'], function () {
+                Route::put('', [MediaGroupsController::class, 'update'])->name('media_groups.update');
+                Route::delete('', [MediaGroupsController::class, 'destroy'])->name('media_groups.destroy');
+            });
+        });
+
+        Route::group(['prefix' => 'medias'], function () {
         });
     });
 });
