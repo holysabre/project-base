@@ -44,6 +44,7 @@ class ImagesController extends Controller
             return [
                 'token' => $token,
                 'expired_at' => $expired_at,
+                'bucket' => $bucket,
             ];
         });
         return json_response(200, '', $qiniu_token);
