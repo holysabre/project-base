@@ -58,6 +58,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
 
         Route::group(['prefix' => 'images'], function () {
             Route::post('', [ImagesController::class, 'store'])->name('user.store');
+            Route::get('qiniuToken', [ImagesController::class, 'qiniuToken'])->name('user.qiniu.token');
         });
 
         Route::group(['prefix' => 'media_groups'], function () {
