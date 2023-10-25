@@ -77,7 +77,7 @@ class AuthorizationsController extends Controller
             throw new AuthenticationException('用户名或密码错误');
         }
 
-        return $this->respondWithToken($token)->setStatusCode(201);
+        return $this->respondWithToken($token);
     }
 
     protected function respondWithToken($token)
