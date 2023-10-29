@@ -30,23 +30,10 @@ class ImagesController extends Controller
         return json_response(200, '', ['image' => new ImageResource($image)]);
     }
 
-    public function qiniuToken()
+    public function qiniuToken(ImageUploadHandler $imageUploadHandler)
     {
-        $ttl = 86400; //24小时
-        // 生成上传Token
-        $qiniu_token = Cache::remember('qiniu_token', $ttl, function () use ($ttl) {
-            $accessKey = env('QINIU_ACCESS_KEY');
-            $secretKey =  env('QINIU_SECRET_KEY');
-            $auth = new QiniuAuth($accessKey, $secretKey);
-            $bucket = env('QINIU_NAME');
-            $token = $auth->uploadToken($bucket, null, $ttl);
-            $expired_at = now()->addSeconds($ttl)->getTimestamp();
-            return [
-                'token' => $token,
-                'expired_at' => $expired_at,
-                'bucket' => $bucket,
-            ];
-        });
-        return json_response(200, '', $qiniu_token);
+        $token = $imageUploadHandler->qiniuToken();
+
+        return json_response(200, '', $token);
     }
 }

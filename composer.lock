@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdb0e983032a0dfd28ffebf177065761",
+    "content-hash": "7a8fa198cf56e81c15a6e832858600ca",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4054,6 +4054,49 @@
                 }
             ],
             "time": "2023-08-07T07:51:17+00:00"
+        },
+        {
+            "name": "panliang/php-krpano",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pl1998/php-krpano.git",
+                "reference": "06512bf5ded41a6d6a61b4cd712cc8fe3e838059"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pl1998/php-krpano/zipball/06512bf5ded41a6d6a61b4cd712cc8fe3e838059",
+                "reference": "06512bf5ded41a6d6a61b4cd712cc8fe3e838059",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Panliang\\PhpKrpano\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "latent",
+                    "email": "panliang@mythinkcar.com"
+                }
+            ],
+            "description": "This is a PHP Krpano name command line package",
+            "support": {
+                "issues": "https://github.com/pl1998/php-krpano/issues",
+                "source": "https://github.com/pl1998/php-krpano/tree/v0.1"
+            },
+            "time": "2023-07-23T01:38:41+00:00"
         },
         {
             "name": "php-open-source-saver/jwt-auth",
