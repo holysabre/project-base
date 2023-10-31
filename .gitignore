@@ -16,3 +16,5 @@ yarn-error.log
 composer.lock
 /public/uploads
 composer.lock
+storage/krpano
+public/temp
