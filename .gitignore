@@ -18,3 +18,4 @@ composer.lock
 storage/krpano
 public/temp
 public/vr
+public/vendor
