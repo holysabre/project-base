@@ -17,3 +17,31 @@ function json_response($code = 200, $msg = 'success', $data = [], $total = 0, $h
     }
     return response()->json($response)->setStatusCode($http_code);
 }
+
+
+function getFilesFromDir($path, $files = [])
+{
+
+    if (is_dir($path)) {
+
+        $dir =  scandir($path);
+        foreach ($dir as $value) {
+            $sub_path = $path . '/' . $value;
+            if ($value == '.' || $value == '..') {
+                continue;
+            } else if (is_dir($sub_path)) {
+                getFilesFromDir($sub_path, $files);
+            } else {
+                $files[] = [$value => $path . '/' . $value];
+            }
+        }
+    }
+    return $files;
+}
+
+function getFilenameByPath($path)
+{
+    $parts = explode('/', $path);
+    list($filename,) = explode('.', last($parts));
+    return $filename;
+}

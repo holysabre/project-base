@@ -11,7 +11,11 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory;
+
+    use Notifiable {
+        notify as protected laravelNotify;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -52,5 +56,21 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function notify($instance)
+    {
+        if (method_exists($instance, 'toDatabase')) {
+            $this->increment('notification_count');
+        }
+
+        $this->laravelNotify($instance);
+    }
+
+    public function markAsRead()
+    {
+        $this->notification_count = 0;
+        $this->save();
+        $this->unreadNotifications->markAsRead();
     }
 }

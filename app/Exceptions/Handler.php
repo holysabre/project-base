@@ -52,8 +52,6 @@ class Handler extends ExceptionHandler
             return json_response(403, '未授权');
         } elseif ($exception instanceof AuthenticationException) {
             return json_response(401, '请登录');
-            // } elseif ($exception instanceof \Yansongda\Pay\Exceptions\GatewayException) {
-            //     return json_response(400, '支付失败', ['error' => $exception->getMessage()]);
         } elseif ($exception instanceof UnauthorizedException) {
             return json_response(403, $exception->getMessage());
         } elseif ($exception instanceof ThrottleRequestsException) {

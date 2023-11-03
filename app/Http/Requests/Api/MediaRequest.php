@@ -2,29 +2,23 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Media;
+use Illuminate\Validation\Rule;
 
 class MediaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
-        return [
-            //
-        ];
+        switch ($this->method()) {
+            case 'POST':
+                return [
+                    'type' => ['required', Rule::in(array_keys(Media::$mapType))],
+                    'media_group_id' => ['required', 'exists:media_groups,id'],
+                    'path' => 'required'
+                ];
+                break;
+            case 'PUT':
+                break;
+        }
     }
 }

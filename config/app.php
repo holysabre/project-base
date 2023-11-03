@@ -167,6 +167,8 @@ return [
         /*
          * Package Service Providers...
          */
+        App\Providers\EasySmsServiceProvider::class,
+        Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -177,8 +179,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
-
-        App\Providers\EasySmsServiceProvider::class,
     ],
 
     /*

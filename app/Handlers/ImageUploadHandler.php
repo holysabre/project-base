@@ -83,7 +83,7 @@ class ImageUploadHandler
         $qiniu_token = Cache::remember('qiniu_token', $ttl, function () use ($ttl) {
             $accessKey = env('QINIU_ACCESS_KEY');
             $secretKey =  env('QINIU_SECRET_KEY');
-            $bucket = env('QINIU_NAME');
+            $bucket = env('QINIU_BUCKET');
             $auth = new QiniuAuth($accessKey, $secretKey);
             $token = $auth->uploadToken($bucket, null, $ttl);
             $expired_at = now()->addSeconds($ttl)->getTimestamp();

@@ -17,7 +17,7 @@ class Media extends Model
         self::TYPE2 => '全景视频',
     ];
 
-    protected $fillable = ['name', 'type', 'path', 'thumb', 'lng', 'lat'];
+    protected $fillable = ['media_group_id', 'name', 'type', 'dist_path', 'thumb', 'lng', 'lat'];
 
     public function user()
     {
@@ -27,5 +27,10 @@ class Media extends Model
     public function media_group()
     {
         return $this->belongsTo(MediaGroup::class);
+    }
+
+    public function panorama_image()
+    {
+        return $this->belongsTo(Image::class);
     }
 }

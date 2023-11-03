@@ -13,8 +13,8 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-composer.lock
 /public/uploads
 composer.lock
 storage/krpano
 public/temp
+public/vr

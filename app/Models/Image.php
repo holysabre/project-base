@@ -9,7 +9,7 @@ class Image extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'path'];
+    protected $fillable = ['type', 'path', 'source'];
 
     public function user()
     {

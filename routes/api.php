@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthorizationsController;
 use App\Http\Controllers\Api\CaptchasController;
 use App\Http\Controllers\Api\ImagesController;
 use App\Http\Controllers\Api\MediaGroupsController;
+use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\VerificationCodesController;
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
     });
 
     // 登录后可以访问的接口
-    Route::group(['middlewares' => ['auth:api']], function () {
+    Route::middleware('auth:api')->group(function () {
         // 当前登录用户信息
         Route::group(['prefix' => 'user'], function () {
             Route::get('', [UsersController::class, 'me'])->name('user.show');
@@ -71,6 +72,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
         });
 
         Route::group(['prefix' => 'medias'], function () {
+            Route::post('', [MediaController::class, 'store'])->name('medias.store');
         });
     });
 });
