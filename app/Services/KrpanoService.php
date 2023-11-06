@@ -23,7 +23,7 @@ class KrpanoService
         $this->folder = $folder;
         $this->origin_file = $origin_file;
         $this->dist_path = $dist_path;
-        $this->temp_dir = public_path('temp');
+        $this->temp_dir = storage_path('temp');
         $this->source = $source;
         $this->downloadOriginFile();
     }
@@ -38,7 +38,7 @@ class KrpanoService
     {
         $dist_path = $this->dist_path;
 
-        // dd($this->pkg_path, $this->origin_file, $dist_path);
+        Log::info('==makePano-info==', [$this->pkg_path, $this->origin_file, $dist_path]);
         // dd($this->origin_file, file_exists($this->origin_file));
 
         $cmd = (new \Panliang\PhpKrpano\Command\MakePano())
@@ -52,11 +52,15 @@ class KrpanoService
             ->setImgPath($this->origin_file) //需要生成的全景球面图路径
             ->setOutput($dist_path . "/vtour"); //生成目录
 
+        Log::info('==makePano-cmd==', [$cmd]);
+
         //生成vr作品
         $data =  (new \Panliang\PhpKrpano\ExecShell(
             (new \Panliang\PhpKrpano\KrpanoToolsScripts($this->pkg_path . "krpanotools"))
                 ->setCmd($cmd)
         ))->exec()->echo();
+
+        Log::info('==makePano-data==', [$data]);
 
         return $data;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Support\Str;
 use App\Handlers\ImageUploadHandler;
+use App\Handlers\QiniuHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ImageRequest;
 use App\Http\Resources\ImageResource;
@@ -30,9 +31,9 @@ class ImagesController extends Controller
         return json_response(200, '', ['image' => new ImageResource($image)]);
     }
 
-    public function qiniuToken(ImageUploadHandler $imageUploadHandler)
+    public function qiniuToken(QiniuHandler $qiniuHandler)
     {
-        $token = $imageUploadHandler->qiniuToken();
+        $token = $qiniuHandler->qiniuToken();
 
         return json_response(200, '', $token);
     }

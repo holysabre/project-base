@@ -26,7 +26,9 @@ class MediaController extends Controller
 
         $user_id = auth('api')->id();
 
-        $builder = Media::query()->withUserId($user_id)
+        $builder = Media::query()->with([
+            'thumb_image:id,path'
+        ])->withUserId($user_id)
             ->where('type', $request->type);
 
         if (!empty($request->media_group_id)) {

@@ -2,12 +2,8 @@
 
 namespace App\Handlers;
 
-use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
-use Qiniu\Auth as QiniuAuth;
-use Qiniu\Storage\UploadManager as QiniuUploadManager;
-use Qiniu\Storage\BucketManager as QiniuBucketManager;
 
 class ImageUploadHandler
 {
@@ -67,34 +63,5 @@ class ImageUploadHandler
 
         // 对图片修改后进行保存
         $image->save();
-    }
-
-    public function uploadToQiniu($filename, $filepath)
-    {
-        $token_package = $this->qiniuToken();
-        $token = $token_package['token'];
-        $uploadMgr = new QiniuUploadManager();
-        $resp = $uploadMgr->putFile($token, $filename, $filepath);
-
-        return $resp;
-    }
-
-    public function qiniuToken($ttl = 86400)
-    {
-        $qiniu_token = Cache::remember('qiniu_token', $ttl, function () use ($ttl) {
-            $accessKey = env('QINIU_ACCESS_KEY');
-            $secretKey =  env('QINIU_SECRET_KEY');
-            $bucket = env('QINIU_BUCKET');
-            $auth = new QiniuAuth($accessKey, $secretKey);
-            $token = $auth->uploadToken($bucket, null, $ttl);
-            $expired_at = now()->addSeconds($ttl)->getTimestamp();
-            return [
-                'token' => $token,
-                'expired_at' => $expired_at,
-                'bucket' => $bucket,
-            ];
-        });
-
-        return $qiniu_token;
     }
 }
