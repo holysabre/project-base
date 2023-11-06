@@ -42,7 +42,7 @@ class SliceImage implements ShouldQueue
         $media = $this->media;
         $origin_file = $media->panorama_image->path;
         $dist_path = storage_path("vr/{$media->name}");
-        $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path);
+        $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path, 'qiniu');
         $krpanoService->makePano();
         $data = $krpanoService->upload();
 

@@ -17,19 +17,15 @@ class KrpanoService
     private $temp_dir;
     private $source;
 
-    public function __construct($folder, $origin_file, $dist_path)
+    public function __construct($folder, $origin_file, $dist_path, $source = null)
     {
         $this->pkg_path = env('KRPANO_PKG_PATH');
         $this->folder = $folder;
         $this->origin_file = $origin_file;
         $this->dist_path = $dist_path;
         $this->temp_dir = public_path('temp');
-        $this->downloadOriginFile();
-    }
-
-    public function setSource($source)
-    {
         $this->source = $source;
+        $this->downloadOriginFile();
     }
 
     /**
@@ -160,11 +156,15 @@ class KrpanoService
                     $ext = 'jpg';
                     break;
             }
+
             $filename = $this->temp_dir . '/' . $this->origin_file . '.' . $ext;
+            $this->origin_file = env('QINIU_DOMAIN') . '/' . $data[0]['hash'];
         } else {
             if (strpos($this->origin_file, 'http') !== false) {
                 $name = getFilenameByPath($this->origin_file);
                 $filename = $this->temp_dir . '/' . $name;
+            } else {
+                $filename = $this->origin_file;
             }
         }
 
