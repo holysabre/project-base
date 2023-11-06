@@ -101,6 +101,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
             Route::get('', [ProductionsController::class, 'index'])->name('productions.index');
             Route::post('', [ProductionsController::class, 'store'])->name('productions.store');
             Route::group(['prefix' => '{production}'], function () {
+                Route::get('', [ProductionsController::class, 'show'])->name('productions.show');
                 Route::put('', [ProductionsController::class, 'update'])->name('productions.update');
                 Route::delete('', [ProductionsController::class, 'destroy'])->name('productions.destroy');
             });

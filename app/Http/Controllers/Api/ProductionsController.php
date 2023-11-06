@@ -42,6 +42,11 @@ class ProductionsController extends Controller
         return json_response(200, '', ['list' => $items], $list->total());
     }
 
+    public function show(Request $request, Production $production)
+    {
+        return json_response(200, '', ['detail' => $production]);
+    }
+
     public function store(ProductionRequest $request)
     {
         $user_id = auth('api')->id();
