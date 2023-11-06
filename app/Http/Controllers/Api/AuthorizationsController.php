@@ -80,6 +80,13 @@ class AuthorizationsController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function logout(Request $request)
+    {
+        auth('api')->logout();
+
+        return json_response();
+    }
+
     protected function respondWithToken($token)
     {
         return json_response(200, '', [

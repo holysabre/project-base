@@ -51,6 +51,12 @@ Route::prefix('v1')->name('v1.')->group(function () {
 
     // 登录后可以访问的接口
     Route::middleware('auth:api')->group(function () {
+
+        // 鉴权
+        Route::group(['prefix' => 'authorizations'], function () {
+            Route::post('logout', [AuthorizationsController::class, 'logout'])->name('authorizations.logout');
+        });
+
         // 当前登录用户信息
         Route::group(['prefix' => 'user'], function () {
             Route::get('', [UsersController::class, 'me'])->name('user.show');
