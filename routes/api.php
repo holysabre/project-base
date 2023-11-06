@@ -72,6 +72,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
         });
 
         Route::group(['prefix' => 'medias'], function () {
+            Route::get('', [MediaController::class, 'index'])->name('medias.index');
             Route::post('', [MediaController::class, 'store'])->name('medias.store');
         });
     });

@@ -33,4 +33,9 @@ class Media extends Model
     {
         return $this->belongsTo(Image::class);
     }
+
+    public function scopeWithUserId($query, $user_id)
+    {
+        return $query->where('user_id', $user_id);
+    }
 }

@@ -12,9 +12,28 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class MediaController extends Controller
 {
+    public function index(Request $request)
+    {
+        $request->validate([
+            'type' => ['required', Rule::in(array_keys(Media::$mapType))],
+            'media_group_id' => 'required',
+        ]);
+
+        $user_id = auth('api')->id();
+
+        $builder = Media::query()->withUserId($user_id)
+            ->where('type', $request->type)
+            ->where('media_group_id', $request->media_group_id);
+
+        $list = $builder->paginate($request->input('per_page', 10));
+
+        return json_response(200, '', ['list' => $list->items()], $list->total());
+    }
+
     public function store(MediaRequest $request)
     {
         $user_id = auth('api')->id();
