@@ -13,7 +13,7 @@ class MediaRequest extends FormRequest
             case 'POST':
                 return [
                     'type' => ['required', Rule::in(array_keys(Media::$mapType))],
-                    'media_group_id' => ['required', 'exists:media_groups,id'],
+                    'media_group_id' => ['sometimes'],
                     'path' => 'required'
                 ];
                 break;

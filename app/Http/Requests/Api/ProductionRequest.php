@@ -13,7 +13,7 @@ class ProductionRequest extends FormRequest
             case 'POST':
                 return [
                     'type' => ['required', Rule::in(array_keys(Production::$mapType))],
-                    'production_group_id' => ['sometimes', 'exists:production_groups,id'],
+                    'production_group_id' => ['sometimes'],
                     'media_id' => ['required', 'exists:media,id'],
                     'title' => 'required',
                     'lng' => 'required',
