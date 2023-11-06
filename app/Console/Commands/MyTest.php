@@ -55,7 +55,7 @@ class MyTest extends Command
                 $data['list'][] = 'vr/' . $media->name . '/vtour/list/' . $name;
             }
         }
-        $data['thumb'] = 'vr/' . $media->name . '/vtour/panos/' . ($name . '.tiles') . '/thumb.jpg';
+        $data['thumb'] = 'vr/' . $media->name . '/vtour/panos/' . ($media->name . '.tiles') . '/thumb.jpg';
 
         $rel_type = get_class($media);
         $rel_id = $media->id;

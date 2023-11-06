@@ -46,7 +46,16 @@ class SliceImage implements ShouldQueue
         $list_path = "vr/{$media->name}/vtour/list/";
         $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path, 'qiniu');
         $krpanoService->makePano();
-        $data = $krpanoService->upload();
+        $krpanoService->upload();
+
+        $data = [];
+        $files = getFilesFromDir(storage_path($list_path));
+        foreach ($files as $file) {
+            foreach ($file as $name => $path) {
+                $data['list'][] = 'vr/' . $media->name . '/vtour/list/' . $name;
+            }
+        }
+        $data['thumb'] = 'vr/' . $media->name . '/vtour/panos/' . ($media->name . '.tiles') . '/thumb.jpg';
 
         $rel_type = get_class($media);
         $rel_id = $media->id;
