@@ -16,7 +16,7 @@
         "laravel-lang/common": "^2.0",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
-        "laravel/telescope": "^4.16",
+        "laravel/telescope": "^4.17",
         "laravel/tinker": "^2.7",
         "overtrue/easy-sms": "^2.5",
         "overtrue/laravel-filesystem-qiniu": "^2.2",

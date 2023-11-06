@@ -32,14 +32,11 @@ class MakePanoFinished extends Notification
 
     public function toDatabase($notifiable)
     {
-        if (!empty($content)) {
-            // 存入数据库里的数据
-            return [
-                'id' => $this->media->id,
-                'title' => '系统消息',
-                'created_at' => Carbon::now(),
-                'content' => "上传素材完成",
-            ];
-        }
+        return [
+            'id' => $this->media->id,
+            'title' => '系统消息',
+            'created_at' => Carbon::now(),
+            'content' => "上传素材完成",
+        ];
     }
 }

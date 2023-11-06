@@ -43,8 +43,9 @@ class SliceImage implements ShouldQueue
         $origin_file = $media->panorama_image->path;
         $dist_path = storage_path("vr/{$media->name}");
         $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path);
-        $krpanoService->makePano();
+        // $krpanoService->makePano();
         $data = $krpanoService->upload();
+        dd($data);
 
         DB::beginTransaction();
         try {
@@ -72,6 +73,7 @@ class SliceImage implements ShouldQueue
         $media->is_slice = 1;
         $media->save();
 
-        $media->user()->notify(new MakePanoFinished($media));
+        $user = $media->user;
+        $user->notify(new MakePanoFinished($media));
     }
 }

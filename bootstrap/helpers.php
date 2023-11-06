@@ -42,6 +42,6 @@ function getFilesFromDir($path, $files = [])
 function getFilenameByPath($path)
 {
     $parts = explode('/', $path);
-    list($filename,) = explode('.', last($parts));
-    return $filename;
+    list($filename, $ext) = explode('.', last($parts));
+    return $filename . (empty($ext) ? '' : '.' . $ext);
 }
