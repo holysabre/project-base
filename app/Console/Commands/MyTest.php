@@ -48,7 +48,8 @@ class MyTest extends Command
         // $data = $krpanoService->upload();
 
         $data = [];
-        $files = getFilesFromDir($list_path);
+        $files = getFilesFromDir(storage_path($list_path));
+        dump($files);
         foreach ($files as $file) {
             foreach ($file as $name => $path) {
                 $data['list'][] = 'vr/' . $media->name . '/vtour/list/' . $name;
