@@ -178,8 +178,10 @@ class KrpanoService
             $client = new Client();
             $ret = $client->get($this->origin_file, ['sink' => $resource]);
             if ($ret->getStatusCode() != 200) {
+                fclose($resource);
                 throw new CustomException('无法下载素材文件');
             }
+            fclose($resource);
         }
         $this->origin_file = $filename;
     }

@@ -26,28 +26,28 @@ class ProductionGroupsController extends Controller
         return json_response(200, '', ['list' => $list->items()], $list->total());
     }
 
-    public function store(ProductionGroupRequest $request, ProductionGroup $media_group)
+    public function store(ProductionGroupRequest $request, ProductionGroup $production_group)
     {
         $user_id = auth('api')->id();
 
-        $media_group->fill($request->all());
-        $media_group->user_id = $user_id;
-        $media_group->save();
+        $production_group->fill($request->all());
+        $production_group->user_id = $user_id;
+        $production_group->save();
 
         return json_response();
     }
 
-    public function update(ProductionGroupRequest $request, ProductionGroup $media_group)
+    public function update(ProductionGroupRequest $request, ProductionGroup $production_group)
     {
-        $media_group->fill($request->all());
-        $media_group->save();
+        $production_group->fill($request->all());
+        $production_group->save();
 
         return json_response();
     }
 
-    public function destroy(Request $request, ProductionGroup $media_group)
+    public function destroy(Request $request, ProductionGroup $production_group)
     {
-        $media_group->delete();
+        $production_group->delete();
 
         return json_response();
     }
