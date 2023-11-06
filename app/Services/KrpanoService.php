@@ -122,6 +122,9 @@ class KrpanoService
         foreach ($files as $file) {
             foreach ($file as $filename => $filepath) {
                 $path = 'vr/' . $this->folder . '/vtour/list/' . $filename;
+                if (!file_exists($filepath)) {
+                    continue;
+                }
                 $success = $disk->put($path, file_get_contents($filepath));
                 if ($success) {
                     Log::info($path . ' uploaded');
