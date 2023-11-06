@@ -13,6 +13,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class MyTest extends Command
@@ -38,7 +39,7 @@ class MyTest extends Command
      */
     public function handle()
     {
-        $media = Media::query()->find(1);
+        $media = Media::query()->find(8);
         $origin_file = $media->panorama_image->path;
         $dist_path = storage_path("vr/{$media->name}");
         $list_path = "vr/{$media->name}/vtour/list/";
