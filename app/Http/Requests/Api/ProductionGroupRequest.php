@@ -30,7 +30,7 @@ class ProductionGroupRequest extends FormRequest
 
                 return [
                     'name' => ['between:2,12', 'string', function ($attribute, $value, $fail) use ($user_id) {
-                        $model = $this->media_group;
+                        $model = $this->production_group;
                         $is_exists = ProductionGroup::query()->where('user_id', $user_id)->where('name', $value)->where('id', '<>', $model->id)->exists();
                         if ($is_exists) {
                             return $fail('分组名字已存在');
