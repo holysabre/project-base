@@ -21,6 +21,7 @@ class MediaController extends Controller
         $request->validate([
             'type' => ['required', Rule::in(array_keys(Media::$mapType))],
             'media_group_id' => 'sometimes',
+            'keywords' => 'sometimes',
         ]);
 
         $user_id = auth('api')->id();
@@ -30,6 +31,10 @@ class MediaController extends Controller
 
         if (!empty($request->media_group_id)) {
             $builder->where('media_group_id', $request->media_group_id);
+        }
+
+        if (!empty($request->keywords)) {
+            $builder->where('name', 'like', '%' . $request->keywords . '%');
         }
 
         $list = $builder->paginate($request->input('per_page', 10));
