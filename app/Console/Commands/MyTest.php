@@ -44,18 +44,17 @@ class MyTest extends Command
         $list_path = "vr/{$media->name}/vtour/list/";
 
         $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path, 'qiniu');
-        // $ret = $krpanoService->makePano();
-        // dd();
-        // $data = $krpanoService->upload();
+        $ret = $krpanoService->makePano();
+        $data = $krpanoService->upload();
 
-        $data = [];
-        $files = getFilesFromDir($list_path);
-        foreach ($files as $file) {
-            foreach ($file as $name => $path) {
-                $data['list'][] = 'vr/test_quanjing/vtour/list/' . $name;
-            }
-        }
-        $data['thumb'] = 'vr/test_quanjing/vtour/panos/' . ($name . '.tiles') . '/thumb.jpg';
+        // $data = [];
+        // $files = getFilesFromDir($list_path);
+        // foreach ($files as $file) {
+        //     foreach ($file as $name => $path) {
+        //         $data['list'][] = 'vr/test_quanjing/vtour/list/' . $name;
+        //     }
+        // }
+        // $data['thumb'] = 'vr/test_quanjing/vtour/panos/' . ($name . '.tiles') . '/thumb.jpg';
 
         $rel_type = get_class($media);
         $rel_id = $media->id;
