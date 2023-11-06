@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\CustomException;
+use App\Handlers\QiniuHandler;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,7 @@ class KrpanoService
     private $origin_file;
     private $dist_path;
     private $temp_dir;
+    private $source;
 
     public function __construct($folder, $origin_file, $dist_path)
     {
@@ -23,6 +25,11 @@ class KrpanoService
         $this->dist_path = $dist_path;
         $this->temp_dir = public_path('temp');
         $this->downloadOriginFile();
+    }
+
+    public function setSource($source)
+    {
+        $this->source = $source;
     }
 
     /**
@@ -133,21 +140,42 @@ class KrpanoService
 
     private function downloadOriginFile()
     {
-        if (strpos($this->origin_file, 'http') !== false) {
-            if (!is_dir($this->temp_dir)) {
-                mkdir($this->temp_dir);
-            }
-            $name = getFilenameByPath($this->origin_file);
-            $filename = $this->temp_dir . '/' . $name;
-            if (!file_exists($filename)) {
-                $resource = fopen($filename, 'w');
-                $client = new Client();
-                $ret = $client->get($this->origin_file, ['sink' => $resource]);
-                if ($ret->getStatusCode() != 200) {
-                    throw new CustomException('无法下载素材文件');
-                }
-            }
-            $this->origin_file = $filename;
+        if (!is_dir($this->temp_dir)) {
+            mkdir($this->temp_dir);
         }
+
+        if ($this->source == 'qiniu') {
+            $qiniuHanlder = new QiniuHandler();
+            $data = $qiniuHanlder->getMetadataFromQiniu($this->origin_file);
+            if (empty($data[0])) {
+                throw new CustomException('无法获取七牛云文件元数据');
+            }
+            switch ($data[0]['mimeType']) {
+                case 'image/png':
+                    $ext = 'png';
+                    break;
+                case 'image/jpeg':
+                case 'image/jpg':
+                default:
+                    $ext = 'jpg';
+                    break;
+            }
+            $filename = $this->temp_dir . '/' . $this->origin_file . '.' . $ext;
+        } else {
+            if (strpos($this->origin_file, 'http') !== false) {
+                $name = getFilenameByPath($this->origin_file);
+                $filename = $this->temp_dir . '/' . $name;
+            }
+        }
+
+        if (!file_exists($filename)) {
+            $resource = fopen($filename, 'w');
+            $client = new Client();
+            $ret = $client->get($this->origin_file, ['sink' => $resource]);
+            if ($ret->getStatusCode() != 200) {
+                throw new CustomException('无法下载素材文件');
+            }
+        }
+        $this->origin_file = $filename;
     }
 }

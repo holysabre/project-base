@@ -11,6 +11,7 @@ use App\Models\Media;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class MediaController extends Controller
 {
@@ -37,6 +38,7 @@ class MediaController extends Controller
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
+            Log::error($e->getMessage(), [$e->getFile(), $e->getLine()]);
             throw new CustomException('上传素材失败');
         }
 

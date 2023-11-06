@@ -3,10 +3,17 @@
 namespace App\Console\Commands;
 
 use App\Handlers\ImageUploadHandler;
+use App\Handlers\QiniuHandler;
 use App\Models\Image;
+use App\Models\Media;
+use App\Notifications\MakePanoFinished;
 use App\Services\KrpanoService;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class MyTest extends Command
@@ -32,27 +39,12 @@ class MyTest extends Command
      */
     public function handle()
     {
-        $uri = 'http://s339r577r.hd-bkt.clouddn.com/lr3ZQJX6CM4is3NjflY6-Zjd1ere';
+        $qiniuHanlder = new QiniuHandler();
 
-        // $dir = public_path('temp');
-        // if (!is_dir($dir)) {
-        //     mkdir($dir);
-        // }
+        $key = 'lr3ZQJX6CM4is3NjflY6-Zjd1ere';
+        $data = $qiniuHanlder->getMetadataFromQiniu($key);
 
-        // $filename = $dir . '/test.png';
-        // $resource = fopen($filename, 'w');
-        // $client = new Client();
-        // $ret = $client->get($uri, ['sink' => $resource]);
-
-        // dump($ret);
-
-        // $origin_file = public_path('temp/test.png');
-        // $dist_path = public_path('vr/test');
-
-        // $krpanoService = new KrpanoService('test', $origin_file, $dist_path);
-        // // $ret = $krpanoService->makePano();
-        // // dump($ret);
-        // $krpanoService->upload();
+        dump($data);
 
         return Command::SUCCESS;
     }

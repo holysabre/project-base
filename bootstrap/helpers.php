@@ -42,6 +42,12 @@ function getFilesFromDir($path, $files = [])
 function getFilenameByPath($path)
 {
     $parts = explode('/', $path);
-    list($filename, $ext) = explode('.', last($parts));
-    return $filename . (empty($ext) ? '' : '.' . $ext);
+    $ext = '';
+    $last_param = last($parts);
+    if (strpos($last_param, '.') !== false) {
+        list($filename, $ext) = explode('.', $last_param);
+    } else {
+        $filename = $last_param;
+    }
+    return $filename . $ext;
 }

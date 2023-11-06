@@ -7,6 +7,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 use Qiniu\Auth as QiniuAuth;
 use Qiniu\Storage\UploadManager as QiniuUploadManager;
+use Qiniu\Storage\BucketManager as QiniuBucketManager;
 
 class ImageUploadHandler
 {
