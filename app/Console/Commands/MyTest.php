@@ -38,24 +38,23 @@ class MyTest extends Command
      */
     public function handle()
     {
-        $media = Media::query()->find(6);
+        $media = Media::query()->find(1);
         $origin_file = $media->panorama_image->path;
         $dist_path = storage_path("vr/{$media->name}");
         $list_path = "vr/{$media->name}/vtour/list/";
 
         $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path, 'qiniu');
-        // $ret = $krpanoService->makePano();
-        // $data = $krpanoService->upload();
+        $ret = $krpanoService->makePano();
+        $data = $krpanoService->upload();
 
         $data = [];
         $files = getFilesFromDir(storage_path($list_path));
-        dump($files);
         foreach ($files as $file) {
             foreach ($file as $name => $path) {
                 $data['list'][] = 'vr/' . $media->name . '/vtour/list/' . $name;
             }
         }
-        $data['thumb'] = 'vr/' . $media->name . '/vtour/panos/' . ($media->name . '.tiles') . '/thumb.jpg';
+        $data['thumb'] = 'vr/' . $media->name . '/vtour/thumb.jpg';
 
         $rel_type = get_class($media);
         $rel_id = $media->id;

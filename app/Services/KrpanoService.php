@@ -129,10 +129,11 @@ class KrpanoService
 
         $thumb_folder_name = $this->folder . '.tiles';
         $path = 'vr/' . $this->folder . '/vtour/panos/' . $thumb_folder_name . '/thumb.jpg';
-        $success = $disk->put($path, public_path($path));
+        $thumb_filename = 'vr/' . $this->folder . '/vtour/thumb.jpg';
+        $success = $disk->put($thumb_filename, public_path($path));
         if ($success) {
             Log::info($path . ' uploaded');
-            $data['thumb'] = $path;
+            $data['thumb'] = $thumb_filename;
         }
 
         return $data;
