@@ -41,7 +41,14 @@ class MediaController extends Controller
 
         $list = $builder->paginate($request->input('per_page', 10));
 
-        return json_response(200, '', ['list' => $list->items()], $list->total());
+        $items = $list->items();
+        foreach ($items as &$item) {
+            if (!empty($item['thumb_image'])) {
+                $item['thumb_image']['path'] = env('QINIU_DOMAIN') . '/' . $item['thumb_image']['path'];
+            }
+        }
+
+        return json_response(200, '', ['list' => $items], $list->total());
     }
 
     public function store(MediaRequest $request)
