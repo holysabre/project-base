@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ProductionRequest;
+use App\Models\Image;
 use App\Models\Production;
 use App\Models\ProductionHotspot;
 use Exception;
@@ -46,7 +47,14 @@ class ProductionsController extends Controller
 
     public function show(Request $request, Production $production)
     {
-        return json_response(200, '', ['detail' => $production]);
+        $production->load(['production_hotspots']);
+
+        $slics_images = Image::query()->where('type', 'slice')
+            ->where('rel_type', 'App\Models\Media')
+            ->where('rel_id', $production->media_id)
+            ->pluck('path');
+
+        return json_response(200, '', ['detail' => $production, 'slics_images' => $slics_images]);
     }
 
     public function store(ProductionRequest $request)

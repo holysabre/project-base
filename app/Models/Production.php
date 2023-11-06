@@ -19,7 +19,7 @@ class Production extends Model
         self::TYPE2 => '全景视频',
     ];
 
-    protected $fillable = ['production_group_id', 'title', 'type', 'description', 'thumb', 'lng', 'lat', 'sort', 'address', 'status'];
+    protected $fillable = ['production_group_id', 'media_id', 'title', 'type', 'description', 'thumb', 'lng', 'lat', 'sort', 'address', 'status'];
 
     public $appends = ['created_at', 'updated_at'];
 
@@ -33,6 +33,11 @@ class Production extends Model
     public function production_group()
     {
         return $this->belongsTo(ProductionGroup::class);
+    }
+
+    public function media()
+    {
+        return $this->belongsTo(Media::class);
     }
 
     public function production_hotspots()
