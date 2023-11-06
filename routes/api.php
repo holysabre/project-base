@@ -104,6 +104,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
                 Route::get('', [ProductionsController::class, 'show'])->name('productions.show');
                 Route::put('', [ProductionsController::class, 'update'])->name('productions.update');
                 Route::delete('', [ProductionsController::class, 'destroy'])->name('productions.destroy');
+                Route::post('clear_hotspots', [ProductionsController::class, 'clearHotspots'])->name('productions.clear_hotspots');
             });
         });
     });

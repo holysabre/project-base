@@ -6,8 +6,10 @@ use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ProductionRequest;
 use App\Models\Production;
+use App\Models\ProductionHotspot;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -73,12 +75,29 @@ class ProductionsController extends Controller
         $production->fill($request->all());
         $production->save();
 
+        if (!empty($request->hotspots)) {
+            $saving_hotspots = [];
+            foreach ($request->hotspots as $hotspot_params) {
+                $hotspot = new ProductionHotspot();
+                $hotspot->fill(Arr::only($hotspot_params, ['name', 'ath', 'atv']));
+                $saving_hotspots[] = $hotspot;
+            }
+            $production->production_hotspots()->saveMany($saving_hotspots);
+        }
+
         return json_response();
     }
 
     public function destroy(Request $request, Production $production)
     {
         $production->delete();
+
+        return json_response();
+    }
+
+    public function clearHotspots(Request $request, Production $production)
+    {
+        $production->production_hotspots()->delete();
 
         return json_response();
     }

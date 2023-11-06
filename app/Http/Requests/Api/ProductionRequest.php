@@ -22,6 +22,12 @@ class ProductionRequest extends FormRequest
                 ];
                 break;
             case 'PUT':
+                return [
+                    'hotspots' => 'sometimes|array',
+                    'hotspots.*.name' => 'required',
+                    'hotspots.*.ath' => 'required',
+                    'hotspots.*.atv' => 'required',
+                ];
                 break;
         }
     }

@@ -44,34 +44,6 @@ class MyTest extends Command
         $dist_path = storage_path("vr/{$media->name}");
         $list_path = "vr/{$media->name}/vtour/list/";
 
-        // $files = getFilesFromDir($list_path);
-
-        // $data = [];
-
-        $disk = Storage::disk('qiniu');
-
-        // foreach ($files as $file) {
-        //     foreach ($file as $filename => $filepath) {
-        //         $path = 'vr/' . $this->folder . '/vtour/list/' . $filename;
-        //         $success = $disk->put($path, file_get_contents($filepath));
-        //         if ($success) {
-        //             Log::info($path . ' uploaded');
-        //             $data['list'][] = $path;
-        //         }
-        //     }
-        // }
-
-        $thumb_folder_name = $media->name . '.tiles';
-        $path = 'vr/' . $media->name . '/vtour/panos/' . $thumb_folder_name . '/thumb.jpg';
-        $thumb_filename = 'vr/' . $media->name . '/vtour/thumb.jpg';
-        // dd(file_exists(storage_path($path)));
-        $success = $disk->put($thumb_filename, file_get_contents(storage_path($path)));
-        if ($success) {
-            Log::info($path . ' uploaded');
-            $data['thumb'] = $thumb_filename;
-        }
-        dd();
-
         $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path, 'qiniu');
         $ret = $krpanoService->makePano();
         $data = $krpanoService->upload();
