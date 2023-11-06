@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use App\Models\Traits\TimestampFormat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Media extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, TimestampFormat;
 
     const TYPE1 = 1;
     const TYPE2 = 2;
@@ -48,15 +48,5 @@ class Media extends Model
     public function scopeWithUserId($query, $user_id)
     {
         return $query->where('user_id', $user_id);
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->toDateTimeString();
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->toDateTimeString();
     }
 }

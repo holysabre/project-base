@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\CaptchasController;
 use App\Http\Controllers\Api\ImagesController;
 use App\Http\Controllers\Api\MediaGroupsController;
 use App\Http\Controllers\Api\MediaController;
+use App\Http\Controllers\Api\ProductionGroupsController;
+use App\Http\Controllers\Api\ProductionsController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\VerificationCodesController;
 use Illuminate\Http\Request;
@@ -83,6 +85,24 @@ Route::prefix('v1')->name('v1.')->group(function () {
             Route::group(['prefix' => '{media}'], function () {
                 Route::put('', [MediaController::class, 'update'])->name('media.update');
                 Route::delete('', [MediaController::class, 'destroy'])->name('media.destroy');
+            });
+        });
+
+        Route::group(['prefix' => 'production_groups'], function () {
+            Route::get('', [ProductionGroupsController::class, 'index'])->name('production_groups.index');
+            Route::post('', [ProductionGroupsController::class, 'store'])->name('production_groups.store');
+            Route::group(['prefix' => '{production_group}'], function () {
+                Route::put('', [ProductionGroupsController::class, 'update'])->name('production_groups.update');
+                Route::delete('', [ProductionGroupsController::class, 'destroy'])->name('production_groups.destroy');
+            });
+        });
+
+        Route::group(['prefix' => 'productions'], function () {
+            Route::get('', [ProductionsController::class, 'index'])->name('productions.index');
+            Route::post('', [ProductionsController::class, 'store'])->name('productions.store');
+            Route::group(['prefix' => '{production}'], function () {
+                Route::put('', [ProductionsController::class, 'update'])->name('productions.update');
+                Route::delete('', [ProductionsController::class, 'destroy'])->name('productions.destroy');
             });
         });
     });
