@@ -20,14 +20,17 @@ class MediaController extends Controller
     {
         $request->validate([
             'type' => ['required', Rule::in(array_keys(Media::$mapType))],
-            'media_group_id' => 'required',
+            'media_group_id' => 'sometimes',
         ]);
 
         $user_id = auth('api')->id();
 
         $builder = Media::query()->withUserId($user_id)
-            ->where('type', $request->type)
-            ->where('media_group_id', $request->media_group_id);
+            ->where('type', $request->type);
+
+        if (!empty($request->media_group_id)) {
+            $builder->where('media_group_id', $request->media_group_id);
+        }
 
         $list = $builder->paginate($request->input('per_page', 10));
 
@@ -64,5 +67,20 @@ class MediaController extends Controller
         dispatch(new SliceImage($media));
 
         return json_response(200);
+    }
+
+    public function update(MediaRequest $request, Media $media)
+    {
+        $media->fill($request->all());
+        $media->save();
+
+        return json_response();
+    }
+
+    public function destroy(Request $request, Media $media)
+    {
+        $media->delete();
+
+        return json_response();
     }
 }
