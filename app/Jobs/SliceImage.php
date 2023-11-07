@@ -87,7 +87,7 @@ class SliceImage implements ShouldQueue
             $thumb_data = [
                 'user_id' => $media->user_id,
                 'type' => 'thumb',
-                'path' => $row,
+                'path' => $data['thumb'],
                 'source' => 'qiniu',
                 'rel_type' => $rel_type,
                 'rel_id' => $rel_id,
