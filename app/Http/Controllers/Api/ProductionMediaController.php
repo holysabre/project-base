@@ -32,6 +32,7 @@ class ProductionMediaController extends Controller
         $production_media->load(['production_media_hotspots']);
 
         $production_media->media->thumb_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->thumb_image->path;
+        $production_media->media->xml_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->xml_image->path;
 
         return json_response(200, '', ['detail' => $production_media]);
     }
@@ -53,7 +54,8 @@ class ProductionMediaController extends Controller
             $saving_hotspots = [];
             foreach ($request->hotspots as $hotspot_params) {
                 $hotspot = new ProductionMediaHotspot();
-                $hotspot->fill(Arr::only($hotspot_params, ['name', 'ath', 'atv', 'linkedsence']));
+                $hotspot->fill(Arr::only($hotspot_params, ['name', 'ath', 'atv']));
+                $hotspot->linkedscene = $hotspot_params['linkedscene'];
                 $saving_hotspots[] = $hotspot;
             }
             $production_media->production_media_hotspots()->saveMany($saving_hotspots);
