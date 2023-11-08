@@ -34,6 +34,7 @@ class ProductionMediaController extends Controller
             'hotspots.*.name' => 'required',
             'hotspots.*.ath' => 'required',
             'hotspots.*.atv' => 'required',
+            'hotspots.*.linkedsence' => 'sometimes',
         ]);
 
         DB::beginTransaction();
@@ -43,7 +44,7 @@ class ProductionMediaController extends Controller
             $saving_hotspots = [];
             foreach ($request->hotspots as $hotspot_params) {
                 $hotspot = new ProductionMediaHotspot();
-                $hotspot->fill(Arr::only($hotspot_params, ['name', 'ath', 'atv']));
+                $hotspot->fill(Arr::only($hotspot_params, ['name', 'ath', 'atv', 'linkedsence']));
                 $saving_hotspots[] = $hotspot;
             }
             $production_media->production_media_hotspots()->saveMany($saving_hotspots);
