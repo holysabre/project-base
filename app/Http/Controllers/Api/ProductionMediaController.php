@@ -27,6 +27,15 @@ class ProductionMediaController extends Controller
         return json_response(200, '', ['list' => $list], $list->count());
     }
 
+    public function show(Request $request, Production $production, ProductionMedia $production_media)
+    {
+        $production_media->load(['production_media_hotspots']);
+
+        $production_media->media->thumb_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->thumb_image->path;
+
+        return json_response(200, '', ['detail' => $production_media]);
+    }
+
     public function saveHotspots(Request $request, Production $production, ProductionMedia $production_media)
     {
         $request->validate([

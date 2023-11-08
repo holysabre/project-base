@@ -111,6 +111,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
                 Route::group(['prefix' => 'production_media'], function () {
                     Route::get('', [ProductionMediaController::class, 'index'])->name('production_media.index');
                     Route::group(['prefix' => '{production_media}'], function () {
+                        Route::get('', [ProductionMediaController::class, 'show'])->name('production_media.show');
                         Route::group(['prefix' => 'hotspots'], function () {
                             Route::put('', [ProductionMediaController::class, 'saveHotspots'])->name('production_media.save_hotspots');
                             Route::delete('', [ProductionMediaController::class, 'destroyHotspots'])->name('production_media.destroy_hotspots');

@@ -9,7 +9,7 @@ class ProductionMedia extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['production_id', 'media_id'];
+    protected $fillable = ['production_id', 'media_id', 'is_main', 'sort'];
 
     public function production()
     {
