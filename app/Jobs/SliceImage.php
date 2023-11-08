@@ -56,7 +56,7 @@ class SliceImage implements ShouldQueue
             }
         }
         $data['thumb'] = 'vr/' . $media->name . '/vtour/thumb.jpg';
-        $data['xml'] = 'vr/' . $media->name . '/vtour/vtour.xml';
+        $data['xml'] = 'vr/' . $media->name . '/vtour/tour.xml';
 
         $rel_type = get_class($media);
         $rel_id = $media->id;
