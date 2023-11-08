@@ -13,14 +13,14 @@ class MediaSlice extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'media:slice';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Meida Slice';
 
     /**
      * Execute the console command.
