@@ -40,9 +40,9 @@ class Production extends Model
         return $this->belongsTo(Media::class);
     }
 
-    public function production_hotspots()
+    public function production_media()
     {
-        return $this->hasMany(ProductionHotspot::class);
+        return $this->hasMany(ProductionMedia::class);
     }
 
     public function scopeWithUserId($query, $user_id)

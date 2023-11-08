@@ -23,7 +23,8 @@
         "panliang/php-krpano": "^0.1.0",
         "php-open-source-saver/jwt-auth": "^2.1",
         "propaganistas/laravel-phone": "^5.0",
-        "qiniu/php-sdk": "^7.11"
+        "qiniu/php-sdk": "^7.11",
+        "spatie/array-to-xml": "^3.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

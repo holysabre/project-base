@@ -56,6 +56,7 @@ class SliceImage implements ShouldQueue
             }
         }
         $data['thumb'] = 'vr/' . $media->name . '/vtour/thumb.jpg';
+        $data['xml'] = 'vr/' . $media->name . '/vtour/vtour.xml';
 
         $rel_type = get_class($media);
         $rel_id = $media->id;
@@ -96,8 +97,21 @@ class SliceImage implements ShouldQueue
             ];
             $thumb_image_id = DB::table('images')->insertGetId($thumb_data);
 
+            $xml_data = [
+                'user_id' => $media->user_id,
+                'type' => 'xml',
+                'path' => $data['xml'],
+                'source' => 'qiniu',
+                'rel_type' => $rel_type,
+                'rel_id' => $rel_id,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+            $xml_image_id = DB::table('images')->insertGetId($xml_data);
+
             $media->is_slice = 1;
             $media->thumb_image_id = $thumb_image_id;
+            $media->xml_image_id = $xml_image_id;
             $media->dist_path = $list_path;
             $media->save();
 

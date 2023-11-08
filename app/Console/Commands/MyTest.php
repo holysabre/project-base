@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Spatie\ArrayToXml\ArrayToXml;
 
 class MyTest extends Command
 {
@@ -39,12 +40,15 @@ class MyTest extends Command
      */
     public function handle()
     {
-        $media = Media::query()->find(8);
+        $media = Media::query()->find(14);
+
         $origin_file = $media->panorama_image->path;
         $dist_path = storage_path("vr/{$media->name}");
         $list_path = "vr/{$media->name}/vtour/list/";
+        $xml_path = storage_path("vr/{$media->name}/vtour/tour.xml");
 
         $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path, 'qiniu');
+
         $ret = $krpanoService->makePano();
         $data = $krpanoService->upload();
 

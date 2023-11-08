@@ -157,6 +157,7 @@ class KrpanoService
             $qiniuHanlder = new QiniuHandler();
             $data = $qiniuHanlder->getMetadataFromQiniu($this->origin_file);
             if (empty($data[0])) {
+                Log::error('无法获取七牛云文件元数据', [$this->origin_file, $data]);
                 throw new CustomException('无法获取七牛云文件元数据');
             }
             switch ($data[0]['mimeType']) {

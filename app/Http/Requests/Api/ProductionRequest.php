@@ -14,7 +14,7 @@ class ProductionRequest extends FormRequest
                 return [
                     'type' => ['required', Rule::in(array_keys(Production::$mapType))],
                     'production_group_id' => ['sometimes'],
-                    'media_id' => ['required', 'exists:media,id'],
+                    'media_ids' => ['required', 'array'],
                     'title' => 'required',
                     'lng' => 'required',
                     'lat' => 'required',
@@ -22,12 +22,6 @@ class ProductionRequest extends FormRequest
                 ];
                 break;
             case 'PUT':
-                return [
-                    'hotspots' => 'sometimes|array',
-                    'hotspots.*.name' => 'required',
-                    'hotspots.*.ath' => 'required',
-                    'hotspots.*.atv' => 'required',
-                ];
                 break;
         }
     }

@@ -8,6 +8,7 @@ use App\Http\Requests\Api\ProductionRequest;
 use App\Models\Image;
 use App\Models\Production;
 use App\Models\ProductionHotspot;
+use App\Models\ProductionMedia;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -47,14 +48,18 @@ class ProductionsController extends Controller
 
     public function show(Request $request, Production $production)
     {
-        $production->load(['production_hotspots']);
+        $production->load(['production_media', 'production_media.media', 'production_media.media.thumb_image']);
 
-        $slics_images = Image::query()->where('type', 'slice')
-            ->where('rel_type', 'App\Models\Media')
-            ->where('rel_id', $production->media_id)
-            ->pluck('path');
+        $production->production_media->each(function ($production_media) {
+            $production_media->media->thumb_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->thumb_image->path;
+        });
 
-        return json_response(200, '', ['detail' => $production, 'slics_images' => $slics_images]);
+        // $slics_images = Image::query()->where('type', 'slice')
+        //     ->where('rel_type', 'App\Models\Media')
+        //     ->where('rel_id', $production->media_id)
+        //     ->pluck('path');
+
+        return json_response(200, '', ['detail' => $production]);
     }
 
     public function store(ProductionRequest $request)
@@ -63,10 +68,18 @@ class ProductionsController extends Controller
 
         DB::beginTransaction();
         try {
-            $media = new Production();
-            $media->fill($request->all());
-            $media->user_id = $user_id;
-            $media->save();
+            $production = new Production();
+            $production->fill($request->all());
+            $production->user_id = $user_id;
+            $production->save();
+
+            $inserting_media_list = [];
+            foreach ($request->media_ids as $media_id) {
+                $inserting_media_list[] = new ProductionMedia([
+                    'media_id' => $media_id,
+                ]);
+            }
+            $production->production_media()->saveMany($inserting_media_list);
 
             DB::commit();
         } catch (Exception $e) {
@@ -83,29 +96,12 @@ class ProductionsController extends Controller
         $production->fill($request->all());
         $production->save();
 
-        if (!empty($request->hotspots)) {
-            $saving_hotspots = [];
-            foreach ($request->hotspots as $hotspot_params) {
-                $hotspot = new ProductionHotspot();
-                $hotspot->fill(Arr::only($hotspot_params, ['name', 'ath', 'atv']));
-                $saving_hotspots[] = $hotspot;
-            }
-            $production->production_hotspots()->saveMany($saving_hotspots);
-        }
-
         return json_response();
     }
 
     public function destroy(Request $request, Production $production)
     {
         $production->delete();
-
-        return json_response();
-    }
-
-    public function clearHotspots(Request $request, Production $production)
-    {
-        $production->production_hotspots()->delete();
 
         return json_response();
     }

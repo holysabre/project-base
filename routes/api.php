@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\ImagesController;
 use App\Http\Controllers\Api\MediaGroupsController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\ProductionGroupsController;
+use App\Http\Controllers\Api\ProductionMediaController;
+use App\Http\Controllers\Api\ProductionMediaHotspotsController;
 use App\Http\Controllers\Api\ProductionsController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\VerificationCodesController;
@@ -105,6 +107,16 @@ Route::prefix('v1')->name('v1.')->group(function () {
                 Route::put('', [ProductionsController::class, 'update'])->name('productions.update');
                 Route::delete('', [ProductionsController::class, 'destroy'])->name('productions.destroy');
                 Route::post('clear_hotspots', [ProductionsController::class, 'clearHotspots'])->name('productions.clear_hotspots');
+
+                Route::group(['prefix' => 'production_media'], function () {
+                    Route::get('', [ProductionMediaController::class, 'index'])->name('production_media.index');
+                    Route::group(['prefix' => '{production_media}'], function () {
+                        Route::group(['prefix' => 'hotspots'], function () {
+                            Route::put('', [ProductionMediaController::class, 'saveHotspots'])->name('production_media.save_hotspots');
+                            Route::delete('', [ProductionMediaController::class, 'destroyHotspots'])->name('production_media.destroy_hotspots');
+                        });
+                    });
+                });
             });
         });
     });
