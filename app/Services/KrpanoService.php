@@ -144,6 +144,15 @@ class KrpanoService
             }
         }
 
+        $path = 'vr/' . $this->folder . '/vtour/tour.xml';
+        if (file_exists(storage_path($path))) {
+            $success = $disk->put($path, file_get_contents(storage_path($path)));
+            if ($success) {
+                Log::info($path . ' uploaded');
+                $data['xml'] = $path;
+            }
+        }
+
         return $data;
     }
 
