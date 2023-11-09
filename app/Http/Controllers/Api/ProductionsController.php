@@ -74,10 +74,11 @@ class ProductionsController extends Controller
             $production->save();
 
             $inserting_media_list = [];
-            foreach ($request->media_ids as $key => $media_id) {
+            for ($i = 0; $i < count($request->media_ids); $i++) {
+                $media_id = $request->media_ids[$i];
                 $inserting_media_list[] = new ProductionMedia([
                     'media_id' => $media_id,
-                    'is_main' => $key == 0 ? 1 : 0,
+                    'is_main' => $i == 0 ? 1 : 0,
                 ]);
             }
             $production->production_media()->saveMany($inserting_media_list);
