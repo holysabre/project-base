@@ -24,6 +24,7 @@ class ProductionMediaController extends Controller
 
         $production->production_media->each(function ($production_media) {
             $production_media->media->thumb_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->thumb_image->path;
+            $production_media->media->xml_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->xml_image->path;
         });
 
         $list = $production->production_media;
