@@ -109,29 +109,11 @@ class KrpanoService
 
     private function uploadToQiniu()
     {
-        $list_path = $this->dist_path . '/vtour/list/';
-        $files = getFilesFromDir($list_path);
-
-        $data = [
-            'list' => [],
-            'thumb' => '',
-        ];
-
         $disk = Storage::disk('qiniu');
 
-        foreach ($files as $file) {
-            foreach ($file as $filename => $filepath) {
-                $path = 'vr/' . $this->folder . '/vtour/list/' . $filename;
-                if (!file_exists($filepath)) {
-                    continue;
-                }
-                $success = $disk->put($path, file_get_contents($filepath));
-                if ($success) {
-                    Log::info($path . ' uploaded');
-                    $data['list'][] = $path;
-                }
-            }
-        }
+        $this->uploadFolderToQiniu('list');
+        $this->uploadFolderToQiniu('plugins');
+        $this->uploadFolderToQiniu('skin');
 
         $thumb_folder_name = $this->folder . '.tiles';
         $path = 'vr/' . $this->folder . '/vtour/panos/' . $thumb_folder_name . '/thumb.jpg';
@@ -140,7 +122,22 @@ class KrpanoService
             $success = $disk->put($thumb_filename, file_get_contents(storage_path($path)));
             if ($success) {
                 Log::info($path . ' uploaded');
-                $data['thumb'] = $thumb_filename;
+            }
+        }
+
+        $path = 'vr/' . $this->folder . '/vtour/tour.html';
+        if (file_exists(storage_path($path))) {
+            $success = $disk->put($path, file_get_contents(storage_path($path)));
+            if ($success) {
+                Log::info($path . ' uploaded');
+            }
+        }
+
+        $path = 'vr/' . $this->folder . '/vtour/tour.js';
+        if (file_exists(storage_path($path))) {
+            $success = $disk->put($path, file_get_contents(storage_path($path)));
+            if ($success) {
+                Log::info($path . ' uploaded');
             }
         }
 
@@ -149,11 +146,29 @@ class KrpanoService
             $success = $disk->put($path, file_get_contents(storage_path($path)));
             if ($success) {
                 Log::info($path . ' uploaded');
-                $data['xml'] = $path;
             }
         }
 
-        return $data;
+        return true;
+    }
+
+    private function uploadFolderToQiniu($folder)
+    {
+        $disk = Storage::disk('qiniu');
+        $list_path = "{$this->dist_path}/vtour/$folder/";
+        $files = getFilesFromDir($list_path);
+        foreach ($files as $file) {
+            foreach ($file as $filename => $filepath) {
+                $path = "vr/{$this->folder}/vtour/$folder/$filename";
+                if (!file_exists($filepath)) {
+                    continue;
+                }
+                $success = $disk->put($path, file_get_contents($filepath));
+                if ($success) {
+                    Log::info($path . ' uploaded');
+                }
+            }
+        }
     }
 
     private function downloadOriginFile()

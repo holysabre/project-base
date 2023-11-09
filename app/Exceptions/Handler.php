@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
             return json_response(429, '操作频繁，请稍后重试');
         }
         // else {
-        //     return json_response(400, $exception->getMessage());
+        //     return json_response(400, $exception->getMessage()); 
         // }
 
         return parent::render($request, $exception);
