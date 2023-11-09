@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
+use App\Models\Media;
 use App\Models\Production;
 use App\Models\ProductionMedia;
 use App\Models\ProductionMediaHotspot;
@@ -12,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * 场景
+ */
 class ProductionMediaController extends Controller
 {
     public function index(Request $request, Production $production)
@@ -35,6 +39,31 @@ class ProductionMediaController extends Controller
         $production_media->media->xml_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->xml_image->path;
 
         return json_response(200, '', ['detail' => $production_media]);
+    }
+
+    public function store(Request $request, Production $production)
+    {
+        $request->validate([
+            'media_ids' => 'required|array',
+        ]);
+
+        $exists_media_ids = $production->production_media->pluck('media_id');
+
+        $media_ids = Media::query()->whereIn('id', $request->media_ids)->whereNotIn('id', $exists_media_ids)->pluck('id');
+        $data = [];
+        foreach ($media_ids as $media_id) {
+            $data[] = new ProductionMedia(['media_id' => $media_id]);
+        }
+        $production->production_media()->saveMany($data);
+
+        return json_response();
+    }
+
+    public function destroy(Request $request, Production $production, ProductionMedia $production_media)
+    {
+        $production_media->delete();
+
+        return json_response();
     }
 
     public function saveHotspots(Request $request, Production $production, ProductionMedia $production_media)
