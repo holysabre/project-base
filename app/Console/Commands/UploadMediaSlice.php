@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Media;
 use Illuminate\Console\Command;
+use App\Jobs\UploadSlicedMeidaImages;
 
 class UploadMediaSlice extends Command
 {
@@ -32,7 +33,7 @@ class UploadMediaSlice extends Command
 
         $media = Media::query()->find($media_id);
 
-        dispatch(new UploadMediaSlice($media));
+        dispatch(new UploadSlicedMeidaImages($media));
 
         return Command::SUCCESS;
     }
