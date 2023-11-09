@@ -85,7 +85,9 @@ class ProductionMediaController extends Controller
             foreach ($request->hotspots as $hotspot_params) {
                 $hotspot = new ProductionMediaHotspot();
                 $hotspot->fill(Arr::only($hotspot_params, ['name', 'ath', 'atv']));
-                $hotspot->linkedscene = $hotspot_params['linkedscene'];
+                if (!empty($hotspot_params['linkedscene'])) {
+                    $hotspot->linkedscene = $hotspot_params['linkedscene'];
+                }
                 $saving_hotspots[] = $hotspot;
             }
             $production_media->production_media_hotspots()->saveMany($saving_hotspots);
