@@ -56,6 +56,10 @@ class UploadSlicedMeidaImages implements ShouldQueue
         $data['thumb'] = 'vr/' . $media->name . '/vtour/thumb.jpg';
         $data['xml'] = 'vr/' . $media->name . '/vtour/tour.xml';
 
+        $xml = simplexml_load_file(storage_path($data['xml']));
+        $data = json_decode(json_encode($xml), 1);
+        $scene_name = $data['scene']['@attributes']['name'];
+
         $rel_type = get_class($media);
         $rel_id = $media->id;
         $now = Carbon::now();
@@ -111,6 +115,7 @@ class UploadSlicedMeidaImages implements ShouldQueue
             $media->thumb_image_id = $thumb_image_id;
             $media->xml_image_id = $xml_image_id;
             $media->dist_path = $list_path;
+            $media->scene_name = $scene_name;
             $media->save();
 
             DB::commit();

@@ -19,7 +19,7 @@ class Media extends Model
         self::TYPE2 => '全景视频',
     ];
 
-    protected $fillable = ['media_group_id', 'name', 'type', 'dist_path', 'thumb', 'lng', 'lat', 'thumb_image_id', 'xml_image_id'];
+    protected $fillable = ['media_group_id', 'name', 'type', 'dist_path', 'thumb', 'lng', 'lat', 'thumb_image_id', 'xml_image_id', 'scene_name'];
 
     public $appends = ['created_at', 'updated_at'];
 
