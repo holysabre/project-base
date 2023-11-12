@@ -9,7 +9,7 @@ class ProductionMediaHotspot extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['production_media_id', 'name', 'style', 'ath', 'atv', 'linkedsence'];
+    protected $fillable = ['production_media_id', 'name', 'style', 'ath', 'atv', 'linkedsence', 'uuid'];
 
     public function production_media()
     {

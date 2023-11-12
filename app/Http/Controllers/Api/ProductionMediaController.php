@@ -71,6 +71,7 @@ class ProductionMediaController extends Controller
     {
         $request->validate([
             'hotspots' => 'sometimes|array',
+            'hotspots.*.uuid' => 'required',
             'hotspots.*.name' => 'required',
             'hotspots.*.ath' => 'required',
             'hotspots.*.atv' => 'required',

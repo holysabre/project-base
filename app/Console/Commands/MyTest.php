@@ -40,7 +40,7 @@ class MyTest extends Command
      */
     public function handle()
     {
-        $media = Media::query()->find(14);
+        $media = Media::query()->find(8);
 
         $origin_file = $media->panorama_image->path;
         $dist_path = storage_path("vr/{$media->name}");
@@ -49,71 +49,74 @@ class MyTest extends Command
 
         $krpanoService = new KrpanoService($media->name, $origin_file, $dist_path, 'qiniu');
 
-        $ret = $krpanoService->makePano();
-        $data = $krpanoService->upload();
+        $xml = simplexml_load_file($xml_path);
+        dd($xml);
 
-        $data = [];
-        $files = getFilesFromDir(storage_path($list_path));
-        foreach ($files as $file) {
-            foreach ($file as $name => $path) {
-                $data['list'][] = 'vr/' . $media->name . '/vtour/list/' . $name;
-            }
-        }
-        $data['thumb'] = 'vr/' . $media->name . '/vtour/thumb.jpg';
+        // $ret = $krpanoService->makePano();
+        // $data = $krpanoService->upload();
 
-        $rel_type = get_class($media);
-        $rel_id = $media->id;
-        $now = Carbon::now();
+        // $data = [];
+        // $files = getFilesFromDir(storage_path($list_path));
+        // foreach ($files as $file) {
+        //     foreach ($file as $name => $path) {
+        //         $data['list'][] = 'vr/' . $media->name . '/vtour/list/' . $name;
+        //     }
+        // }
+        // $data['thumb'] = 'vr/' . $media->name . '/vtour/thumb.jpg';
 
-        dump($data);
+        // $rel_type = get_class($media);
+        // $rel_id = $media->id;
+        // $now = Carbon::now();
 
-        DB::beginTransaction();
-        try {
-            $insert_data = [];
-            foreach ($data['list'] as $row) {
-                $insert_data[] = [
-                    'user_id' => $media->user_id,
-                    'type' => 'slice',
-                    'path' => $row,
-                    'source' => 'qiniu',
-                    'rel_type' => $rel_type,
-                    'rel_id' => $rel_id,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
-            }
+        // dump($data);
 
-            $chunck = collect($insert_data);
-            $chunks = $chunck->chunk(10);
-            $chunks->all();
-            foreach ($chunks as $val) {
-                DB::table('images')->insert($val->toArray());
-            }
+        // DB::beginTransaction();
+        // try {
+        //     $insert_data = [];
+        //     foreach ($data['list'] as $row) {
+        //         $insert_data[] = [
+        //             'user_id' => $media->user_id,
+        //             'type' => 'slice',
+        //             'path' => $row,
+        //             'source' => 'qiniu',
+        //             'rel_type' => $rel_type,
+        //             'rel_id' => $rel_id,
+        //             'created_at' => $now,
+        //             'updated_at' => $now,
+        //         ];
+        //     }
 
-            $thumb_data = [
-                'user_id' => $media->user_id,
-                'type' => 'thumb',
-                'path' => $data['thumb'],
-                'source' => 'qiniu',
-                'rel_type' => $rel_type,
-                'rel_id' => $rel_id,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-            $thumb_image_id = DB::table('images')->insertGetId($thumb_data);
+        //     $chunck = collect($insert_data);
+        //     $chunks = $chunck->chunk(10);
+        //     $chunks->all();
+        //     foreach ($chunks as $val) {
+        //         DB::table('images')->insert($val->toArray());
+        //     }
 
-            $media->is_slice = 1;
-            $media->thumb_image_id = $thumb_image_id;
-            $media->dist_path = $list_path;
-            $media->save();
+        //     $thumb_data = [
+        //         'user_id' => $media->user_id,
+        //         'type' => 'thumb',
+        //         'path' => $data['thumb'],
+        //         'source' => 'qiniu',
+        //         'rel_type' => $rel_type,
+        //         'rel_id' => $rel_id,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ];
+        //     $thumb_image_id = DB::table('images')->insertGetId($thumb_data);
 
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-        }
+        //     $media->is_slice = 1;
+        //     $media->thumb_image_id = $thumb_image_id;
+        //     $media->dist_path = $list_path;
+        //     $media->save();
 
-        $user = $media->user;
-        $user->notify(new MakePanoFinished($media));
+        //     DB::commit();
+        // } catch (Exception $e) {
+        //     DB::rollBack();
+        // }
+
+        // $user = $media->user;
+        // $user->notify(new MakePanoFinished($media));
 
         return Command::SUCCESS;
     }
