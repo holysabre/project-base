@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ProductionRequest;
+use App\Jobs\MakeProductionXml;
 use App\Models\Image;
 use App\Models\Production;
 use App\Models\ProductionHotspot;
@@ -90,6 +91,8 @@ class ProductionsController extends Controller
             throw new CustomException('创建作品失败');
         }
 
+        dispatch(new MakeProductionXml($production));
+
         return json_response(200);
     }
 
@@ -97,6 +100,8 @@ class ProductionsController extends Controller
     {
         $production->fill($request->all());
         $production->save();
+
+        dispatch(new MakeProductionXml($production));
 
         return json_response();
     }
