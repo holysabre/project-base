@@ -55,7 +55,9 @@ class ProductionsController extends Controller
             $production_media->media->thumb_image->path = env('QINIU_DOMAIN') . '/' . $production_media->media->thumb_image->path;
         });
 
-        $production->xml_image->path = env('QINIU_DOMAIN') . '/' . $production->xml_image->path;
+        if ($production->xml_image) {
+            $production->xml_image->path = env('QINIU_DOMAIN') . '/' . $production->xml_image->path;
+        }
 
         // $slics_images = Image::query()->where('type', 'slice')
         //     ->where('rel_type', 'App\Models\Media')
