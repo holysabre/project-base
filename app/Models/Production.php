@@ -40,6 +40,11 @@ class Production extends Model
         return $this->belongsTo(Media::class);
     }
 
+    public function xml_image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+
     public function production_media()
     {
         return $this->hasMany(ProductionMedia::class);
